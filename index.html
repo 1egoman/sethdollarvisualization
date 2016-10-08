@@ -5,12 +5,31 @@
   <body>
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
     <script>
-      var a = 1;
-      
+
+      let elementID = '#canvas';
+      let rectWidth = $(window).width();
+      let rectHeight = $(window).height();
+
+      $('<canvas>').attr({
+          id: elementID
+      }).css({
+        width: rectWidth + 'px',
+        height: rectHeight + 'px'
+      }).appendTo('body');
+
+      let canvas = document.getElementById(elementID);
+
+
+
+
+
+
       function onWord(word, emph) {
         console.log(word)
       }
 
+
+      // The mock
       let wordIndex = 0;
       let words = [
         ["foo", 0],
