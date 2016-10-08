@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Visuals!</title>
+  </head>
+  <body>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    <script>
+      var a = 1;
+      
+      function onWord(word, emph) {
+        console.log(word)
+      }
+
+      let wordIndex = 0;
+      let words = [
+        ["foo", 0],
+        ["bar", 0],
+        ["baz", 0],
+        ["emphesized", 1],
+      ];
+
+      let interval = setInterval(__ => {
+        words[wordIndex] && onWord.apply(null, words[wordIndex]);
+        wordIndex++;
+
+        if (wordIndex > words.length) {
+          clearInterval(interval);
+        }
+      }, 500);
+    </script>
+  </body>
+</html>
