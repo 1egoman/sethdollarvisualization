@@ -1,15 +1,45 @@
 <html>
   <head>
     <title>Visuals!</title>
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
     <style>
       body, html {
         margin: 0;
         padding: 0;
       }
+
+      .html-text-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .html-text {
+        font-family: 'Luckiest Guy', sans-serif;
+        font-size: 72px;
+        color: white;
+        -webkit-text-fill-color: white;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: black;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
     </style>
   </head>
   <body>
-    <img id="image" />
+    <div class="html-text-container">
+      <div class="html-text"></div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 
     <script>
@@ -28,6 +58,7 @@
       let canvas = document.getElementById(elementID);
       let ctx = canvas.getContext("2d");
       let pageColor = randomHex();
+      let wordList = "";
 
       function randomHex() {
         return '#' + (function co(lor){   return (lor +=
@@ -58,19 +89,44 @@
 
       // when a word comes in
       function onWord(word) {
-        console.log("word", word)
         if (cache[word]) {
+          ctx.fillStyle = pageColor;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
           // Draw the image if the word is emphesised
           ctx.drawImage(cache[word], 0, 0, canvas.width, canvas.height);
 
           // generate a random color
           pageColor = randomHex();
+          wordList = "";
+          $('.html-text').text(word);
         } else {
           // otherwise, fill with a color
           ctx.fillStyle = pageColor;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
+          wordList = `${wordList} ${word}`;
+          $('.html-text').text(wordList);
         }
+
       }
+
+
+
+
+
+      let width = $(window).innerWidth();
+      let height = $(window).innerHeight();
+
+      $(window).on('resize', function() {
+        const win = $(window)
+        width = win.innerWidth();
+        height = win.innerHeight();
+        canvas.setAttribute('width', width)
+        canvas.setAttribute('height', height)
+      }).trigger('resize');
+
+
+
+
 
 
       // The mock
@@ -78,8 +134,9 @@
       let words = [
         ["foo"],
         ["bar"],
-        ["baz"],
         ["house"],
+        ["baz"],
+        ["milk"],
       ];
 
       let interval = setInterval(__ => {
