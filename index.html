@@ -1,41 +1,85 @@
 <html>
   <head>
     <title>Visuals!</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
+    <img id="image" />
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+
     <script>
 
-      let elementID = '#canvas';
+
+
+      let elementID = '#image';
       let rectWidth = $(window).width();
       let rectHeight = $(window).height();
 
-      $('<canvas>').attr({
-          id: elementID
-      }).css({
+      // Set up the canvas
+      $('<canvas>').attr({id: elementID}).css({
         width: rectWidth + 'px',
         height: rectHeight + 'px'
       }).appendTo('body');
-
       let canvas = document.getElementById(elementID);
+      let ctx = canvas.getContext("2d");
+      let pageColor = randomHex();
 
+      function randomHex() {
+        return '#' + (function co(lor){   return (lor +=
+          [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)])
+          && (lor.length == 6) ?  lor : co(lor); })('');
+      }
 
+      let emphwords = [
+        "house",
+        "milk",
+      ];
 
+      // Load an image for each word
+      // Precached for your sanity?
+      let cache = {};
+      emphwords.forEach(word => {
+        fetch(
+          `http://api.giphy.com/v1/gifs/search?q=${encodeURIComponent(word)}&api_key=dc6zaTOxFJmzC&limit=1&offset=0`
+        ).then(r => r.json()).then(json => {
+          let name = json.data[0].images.downsized.url;
+          let image = new Image();
+          image.onload = function() {
+            cache[word] = image;
+          }
+          image.src = name;
+        });
+      });
 
+      // when a word comes in
+      function onWord(word) {
+        console.log("word", word)
+        if (cache[word]) {
+          // Draw the image if the word is emphesised
+          ctx.drawImage(cache[word], 0, 0, canvas.width, canvas.height);
 
-
-      function onWord(word, emph) {
-        console.log(word)
+          // generate a random color
+          pageColor = randomHex();
+        } else {
+          // otherwise, fill with a color
+          ctx.fillStyle = pageColor;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
       }
 
 
       // The mock
       let wordIndex = 0;
       let words = [
-        ["foo", 0],
-        ["bar", 0],
-        ["baz", 0],
-        ["emphesized", 1],
+        ["foo"],
+        ["bar"],
+        ["baz"],
+        ["house"],
       ];
 
       let interval = setInterval(__ => {
