@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Visuals!</title>
-    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
     <style>
       body, html {
         margin: 0;
@@ -23,8 +23,10 @@
       }
 
       .html-text {
-        font-family: 'Luckiest Guy', sans-serif;
-        font-size: 72px;
+        font-family: 'Open Sans', cursive;
+        font-weight: bold;
+        font-size: 96px;
+        text-transform: uppercase;
         color: white;
         -webkit-text-fill-color: white;
         -webkit-text-stroke-width: 2px;
@@ -32,7 +34,6 @@
         -webkit-user-select: none;
         user-select: none;
       }
-
     </style>
   </head>
   <body>
@@ -43,8 +44,16 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 
     <script>
+      // emphasized words that will make the word big
+      let emphwords = [
+        "love",
+        "bond",
+        "birds",
+        "vision",
+        "above",
 
-
+        "loved",
+      ];
 
       let elementID = '#image';
       let rectWidth = $(window).width();
@@ -60,20 +69,16 @@
       let pageColor = randomHex();
       let wordList = "";
 
+      // Generate a random hex color
       function randomHex() {
-        return '#' + (function co(lor){   return (lor +=
-          [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*16)])
-          && (lor.length == 6) ?  lor : co(lor); })('');
+        return '#'+Math.floor(Math.random()*16777215).toString(16);
       }
-
-      let emphwords = [
-        "house",
-        "milk",
-      ];
 
       // Load an image for each word
       // Precached for your sanity?
-      let cache = {};
+      let cache = {
+        vanity: "",
+      };
       emphwords.forEach(word => {
         fetch(
           `http://api.giphy.com/v1/gifs/search?q=${encodeURIComponent(word)}&api_key=dc6zaTOxFJmzC&limit=1&offset=0`
@@ -89,58 +94,368 @@
 
       // when a word comes in
       function onWord(word) {
-        if (cache[word]) {
+        let img = cache[word];
+        if (img) {
           ctx.fillStyle = pageColor;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           // Draw the image if the word is emphesised
-          ctx.drawImage(cache[word], 0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
           // generate a random color
           pageColor = randomHex();
+
+          // clear the word list (for the enxt un emph screen)
+          // then make the font size big
           wordList = "";
           $('.html-text').text(word);
+          $('.html-text').attr('style', "font-size: 512px");
         } else {
+          let random = Math.random();
+
+          if (random > 0.7 || word.match(/[?.!]/) !== null) {
+            wordList = "";
+          }
+
           // otherwise, fill with a color
           ctx.fillStyle = pageColor;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          wordList = `${wordList} ${word}`;
+          wordList = `${wordList} ${word}`.trim();
           $('.html-text').text(wordList);
+          $('.html-text').attr('style', "font-size: 96px");
         }
-
       }
-
-
-
-
 
       let width = $(window).innerWidth();
       let height = $(window).innerHeight();
 
       $(window).on('resize', function() {
-        const win = $(window)
+        const win = $(window);
         width = win.innerWidth();
         height = win.innerHeight();
-        canvas.setAttribute('width', width)
-        canvas.setAttribute('height', height)
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', height);
       }).trigger('resize');
-
-
-
-
-
 
       // The mock
       let wordIndex = 0;
       let words = [
-        ["foo"],
-        ["bar"],
-        ["house"],
-        ["baz"],
-        ["milk"],
+        "how",
+        "deep",
+        "is",
+        "your",
+        "love",
+        "how",
+        "deep",
+        "is",
+        "our",
+        "bond",
+        "if",
+        "that's",
+        "what",
+        "it",
+        "takes",
+        "for",
+        "you",
+        "to",
+        "be",
+        "gone?",
+        "How",
+        "deep",
+        "are",
+        "my",
+        "words",
+        "to",
+        "fuck",
+        "what",
+        "you",
+        "heard",
+        "from",
+        "one",
+        "of",
+        "these",
+        "birds",
+        "whose",
+        "vision",
+        "is",
+        "blurred",
+        "Like",
+        "how",
+        "will",
+        "I",
+        "know",
+        "whenever",
+        "you",
+        "show",
+        "whenever",
+        "you",
+        "grow",
+        "whenever",
+        "you",
+        "low",
+        "Do",
+        "it",
+        "just",
+        "because",
+        "go",
+        "well",
+        "and",
+        "above",
+        "we",
+        "push",
+        "and",
+        "we",
+        "shove",
+        "how",
+        "deep",
+        "is",
+        "your",
+        "love",
+        "Maybe",
+        "she",
+        "subbed",
+        "me",
+        "maybe",
+        "she",
+        "loved",
+        "me",
+        "Maybe",
+        "she",
+        "put",
+        "her",
+        "pride",
+        "aside",
+        "and",
+        "nothing",
+        "above",
+        "me",
+        "She",
+        "ain't",
+        "shallow",
+        "like",
+        "that",
+        "she",
+        "wouldn't",
+        "dub",
+        "me",
+        "If",
+        "she",
+        "seen",
+        "me",
+        "out",
+        "I'm",
+        "pretty",
+        "sure",
+        "she",
+        "would",
+        "hug",
+        "me",
+        "I",
+        "done",
+        "did",
+        "a",
+        "lot",
+        "of",
+        "shit",
+        "that",
+        "basically",
+        "ruined",
+        "you",
+        "She",
+        "said",
+        "she",
+        "heard",
+        "your",
+        "tape",
+        "Seth",
+        "she",
+        "thinking",
+        "bout",
+        "suing",
+        "you",
+        "She",
+        "don't",
+        "give",
+        "a",
+        "fuck",
+        "about",
+        "the",
+        "bitches",
+        "pursuing",
+        "you",
+        "And",
+        "when",
+        "you",
+        "started",
+        "out",
+        "you",
+        "know",
+        "she",
+        "knew",
+        "she",
+        "was",
+        "losing",
+        "you",
+        "Lost",
+        "to",
+        "the",
+        "world",
+        "she",
+        "was",
+        "really",
+        "ya",
+        "girl",
+        "Now",
+        "you",
+        "understand",
+        "the",
+        "concept",
+        "of",
+        "diamonds",
+        "and",
+        "pearls",
+        "You",
+        "had",
+        "heard",
+        "about",
+        "this",
+        "one",
+        "thang",
+        "and",
+        "you",
+        "could've",
+        "hurled",
+        "Cause",
+        "you",
+        "had",
+        "a",
+        "vision",
+        "of",
+        "you",
+        "bringing",
+        "her",
+        "to",
+        "ya",
+        "world",
+        "Now",
+        "you",
+        "out",
+        "on",
+        "the",
+        "road",
+        "now",
+        "you",
+        "out",
+        "living",
+        "life",
+        "Cutting",
+        "through",
+        "this",
+        "state",
+        "of",
+        "vanity",
+        "cause",
+        "it's",
+        "only",
+        "right",
+        "Told",
+        "the",
+        "fam",
+        "if",
+        "they",
+        "come",
+        "for",
+        "me",
+        "fight",
+        "of",
+        "my",
+        "life",
+        "And",
+        "Grandemah",
+        "she",
+        "the",
+        "realest",
+        "cause",
+        "she",
+        "gave",
+        "me",
+        "a",
+        "knife",
+        "How",
+        "deep",
+        "is",
+        "your",
+        "love",
+        "how",
+        "deep",
+        "is",
+        "our",
+        "bond",
+        "if",
+        "that's",
+        "what",
+        "it",
+        "takes",
+        "for",
+        "you",
+        "to",
+        "be",
+        "gone?",
+
+        "How",
+        "deep",
+        "are",
+        "my",
+        "words",
+        "to",
+        "fuck",
+        "what",
+        "you",
+        "heard",
+        "from",
+        "one",
+        "of",
+        "these",
+        "birds",
+        "whose",
+        "vision",
+        "is",
+        "blurred",
+        "Like",
+        "how",
+        "will",
+        "I",
+        "know",
+        "whenever",
+        "you",
+        "show",
+        "whenever",
+        "you",
+        "grow",
+        "whenever",
+        "you",
+        "low",
+        "Do",
+        "it",
+        "just",
+        "because",
+        "go",
+        "well",
+        "and",
+        "above",
+        "we",
+        "push",
+        "and",
+        "we",
+        "shove",
+        "how",
+        "deep",
+        "is",
+        "your",
+        "love",
       ];
 
       let interval = setInterval(__ => {
-        words[wordIndex] && onWord.apply(null, words[wordIndex]);
+        words[wordIndex] && onWord.apply(null, [words[wordIndex]]);
         wordIndex++;
 
         if (wordIndex > words.length) {
