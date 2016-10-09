@@ -5,6 +5,7 @@
 # input.txt:
 # some_phrase
 # 01 02
+# 06 08
 
 NAME="$(cat $1 | head -n 1)"
 CONTENTS="$(cat $1 | tail -n +2)"
